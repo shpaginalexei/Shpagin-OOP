@@ -1,28 +1,35 @@
 ﻿#pragma once
 #include <string>
 #include "Utils.h"
-
+#include <boost/serialization/serialization.hpp>
 
 class ShpaginEmployee
 {
 public:
 
 	ShpaginEmployee();
-	~ShpaginEmployee() {};
+	virtual ~ShpaginEmployee() {};
 
 	static void reset_max_id();
 
-	friend std::istream& operator>> (std::istream&, ShpaginEmployee&);
-	friend std::ostream& operator<< (std::ostream&, const ShpaginEmployee&);
+	virtual void console_input(std::istream&);
+	virtual void console_output(std::ostream&) const;
 
-	friend std::ifstream& operator>> (std::ifstream&, ShpaginEmployee&);
-	friend std::ofstream& operator<< (std::ofstream&, const ShpaginEmployee&);
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& id;
+		ar& name;
+		ar& age;
+		ar& experience;
+		ar& salary;
+	}
 
-private:
+protected:
 	static int max_id;
 	int id;
-	std::string name = "";
-	int age = 0;
-	Departament departament = Departament::Other;
-	int salary = 0;
+	std::string name;
+	int age;
+	int experience;
+	int salary;
 };

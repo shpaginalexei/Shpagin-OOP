@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Employee.h"
 #include <vector>
+#include <boost/serialization/shared_ptr.hpp>
 
 
 class ShpaginCompany
@@ -8,6 +9,7 @@ class ShpaginCompany
 public:
 
 	void add_employee();
+	void add_developer();
 
 	friend std::ostream& operator<< (std::ostream&, const ShpaginCompany&);
 
@@ -27,9 +29,10 @@ public:
 
 private:
 
-	std::vector<ShpaginEmployee*> employees = {};
+	std::vector<boost::shared_ptr<ShpaginEmployee>> employees = {};
 
 	void clear();
+
 	bool changed = false;
 	std::string file_name = "";
 	const std::string extention = ".txt";

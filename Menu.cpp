@@ -21,16 +21,16 @@ void BackToMenu() {
 void MainMenu(ShpaginCompany& company) {
     static const int main_menu_size = 7;
     static const std::string main_menu[main_menu_size] = {
-    "Шпагин IT",
     "1. Добавить сотрудника",
-    "2. Просмотреть всех",
-    "3. Сохранить",
-    "4. Загрузить",
-    "5. Очистить",
+    "2. Добавить разработчика",
+    "3. Просмотреть всех",
+    "4. Сохранить",
+    "5. Загрузить",
+    "6. Очистить",
     "0. Выход",
     };
     Print(main_menu, main_menu_size);
-    int menu = GetCorrectNumber(std::cin, 0, 8, ">> ", "");
+    int menu = GetCorrectNumber(std::cin, 0, 6, ">> ", "");
     system("cls");
     switch (menu) {
     case 1:
@@ -42,12 +42,19 @@ void MainMenu(ShpaginCompany& company) {
     }
     case 2:
     {
+        std::cout << "-> Добавить разработчика" << std::endl;
+        company.add_developer();
+        BackToMenu();
+        break;
+    }
+    case 3:
+    {
         std::cout << "-> Просмотреть всех" << std::endl;
         std::cout << company;
         BackToMenu();
         break;
     }
-    case 3:
+    case 4:
     {
         std::cout << "-> Сохранить" << std::endl;
         if (CheckBeforeSave(company)) {
@@ -56,7 +63,7 @@ void MainMenu(ShpaginCompany& company) {
         BackToMenu();
         break;
     }
-    case 4:
+    case 5:
     {
         std::cout << "-> Загрузить" << std::endl;
         CheckBeforeLoad(company);
@@ -64,7 +71,7 @@ void MainMenu(ShpaginCompany& company) {
         BackToMenu();
         break;
     }
-    case 5:
+    case 6:
     {
         std::cout << "-> Очистить" << std::endl;
         company.clear_company();

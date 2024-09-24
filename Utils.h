@@ -4,39 +4,6 @@
 #include <unordered_map>
 
 
-enum Departament {
-    MIN = 0,
-    Dev = MIN,
-    QA,
-    DevOps,
-    ITSupport,
-    PM,
-    Design,
-    Cyber,
-    DataScience,
-    HR,
-    SalesMarketing,
-    Other,
-    MAX = Other,
-};
-
-static std::unordered_map<Departament, std::string> DepartamentToString = {
-    {Dev, "Dev"},
-    {QA, "QA"},
-    {DevOps, "DevOps"},
-    {ITSupport, "ITSupport"},
-    {PM, "PM"},
-    {Design, "Design"},
-    {Cyber, "Cyber"},
-    {DataScience, "DataScience"},
-    {HR, "HR"},
-    {SalesMarketing, "SalesMarketing"},
-    {Other, "Other"},
-};
-
-std::string enumToString(const Departament&);
-std::string enumToString();
-
 template <typename T>
 T GetCorrectNumber(std::istream& in, T min, T max,
     const std::string welcome_message, const std::string error_message = "") {

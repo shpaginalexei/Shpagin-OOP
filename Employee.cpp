@@ -13,44 +13,24 @@ void ShpaginEmployee::reset_max_id() {
 
 ShpaginEmployee::ShpaginEmployee() {
 	id = ++max_id;
+	name = "";
+	age = 0;
+	experience = 0;
+	salary = 0;
 }
 
-std::istream& operator>> (std::istream& in, ShpaginEmployee& e) {
+void ShpaginEmployee::console_input(std::istream& in) {
     std::cout << "фамилия и имя: ";
-	std::getline(in >> std::ws, e.name);
-	e.age = GetCorrectNumber(in, 18, 100, "возраст: ");
-	std::string departament_message = "отдел (" + enumToString() + "): ";
-	e.departament = static_cast<Departament>(GetCorrectNumber<int>(in, 
-		Departament::MIN, Departament::MAX, departament_message));
-	e.salary = GetCorrectNumber(in, 0, INT_MAX, "зарпата (в месяц): ");
-    return in;
+	std::getline(in >> std::ws, name);
+	age = GetCorrectNumber(in, 18, 100, "возраст: ");
+	experience = GetCorrectNumber(in, 0, age, "стаж работы: ");
+	salary = GetCorrectNumber(in, 0, INT_MAX, "зарпата (в месяц): ");
 }
 
-std::ostream& operator<< (std::ostream& out, const ShpaginEmployee& e) {
-	out << "Сотрудник id_" << e.id << std::endl
-		<< "имя - " << e.name << std::endl
-		<< "возраст - " << e.age << std::endl
-		<< "отдел - " << enumToString(e.departament) << std::endl
-		<< "зарплата - " << e.salary << " руб/мес" << std::endl;
-    return out;
-}
-
-std::ifstream& operator>> (std::ifstream& fin, ShpaginEmployee& e) {
-	fin >> e.id;
-	std::getline(fin >> std::ws, e.name);
-	fin >> e.age;
-	int departament;
-	fin >> departament;
-	e.departament = static_cast<Departament>(departament);
-	fin >> e.salary;
-    return fin;
-}
-
-std::ofstream& operator<< (std::ofstream& fout, const ShpaginEmployee& e) {
-	fout << e.id << std::endl
-		 << e.name << std::endl
-		 << e.age << std::endl
-		 << static_cast<int>(e.departament) << std::endl
-		 << e.salary << std::endl;
-    return fout;
+void ShpaginEmployee::console_output(std::ostream& out) const {
+	out << "Сотрудник id_" << id << std::endl
+		<< "имя - " << name << std::endl
+		<< "возраст - " << age << std::endl
+		<< "стаж работы - " << experience << " год/года/лет" << std::endl
+		<< "зарплата - " << salary << " руб/мес" << std::endl;
 }

@@ -1,21 +1,38 @@
 ﻿#include "Company.h"
 #include "Employee.h"
+#include "Developer.h"
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
 #include <filesystem>
 
+#include <boost/serialization/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/export.hpp>
+
+BOOST_CLASS_EXPORT(ShpaginDeveloper)
+
 
 void ShpaginCompany::add_employee() {
-	ShpaginEmployee* e = new ShpaginEmployee();
-	std::cin >> *e;
+	boost::shared_ptr<ShpaginEmployee> e  = boost::make_shared<ShpaginEmployee>(ShpaginEmployee());
+    e->console_input(std::cin);
+    employees.push_back(e);
+    changed = true;
+}
+
+void ShpaginCompany::add_developer() {
+    boost::shared_ptr<ShpaginEmployee> e = boost::make_shared<ShpaginDeveloper>(ShpaginDeveloper());
+    e->console_input(std::cin);
     employees.push_back(e);
     changed = true;
 }
 
 std::ostream& operator<< (std::ostream& out, const ShpaginCompany& c) {
 	for (auto& e : c.employees) {
-		out << *e << std::endl;
+        e->console_output(std::cout);
+        std::cout << std::endl;
 	}
 	return out;
 }
@@ -23,10 +40,10 @@ std::ostream& operator<< (std::ostream& out, const ShpaginCompany& c) {
 std::ifstream& operator>> (std::ifstream& fin, ShpaginCompany& c) {
 	size_t N;
 	fin >> N;
-    //c.clear(); // ???
+    boost::archive::text_iarchive oa(fin);
 	for (int i = 0; i < N; i++) {
-        ShpaginEmployee* e = new ShpaginEmployee();
-		fin >> *e;
+        boost::shared_ptr<ShpaginEmployee> e;
+        oa& e;
         c.employees.push_back(e);
 	}
 	return fin;
@@ -34,8 +51,9 @@ std::ifstream& operator>> (std::ifstream& fin, ShpaginCompany& c) {
 
 std::ofstream& operator<< (std::ofstream& fout, const ShpaginCompany& c) {
 	fout << c.employees.size() << std::endl;
+    boost::archive::text_oarchive oa(fout);
 	for (auto& e : c.employees) {
-		fout << *e;
+        oa& e;
 	}
 	return fout;
 }
@@ -61,9 +79,6 @@ void ShpaginCompany::set_directory(const std::string& dir) {
 }
 
 void ShpaginCompany::clear() {
-    for (auto& e : employees) {
-        delete e;
-    }
     employees.clear();
     ShpaginEmployee::reset_max_id();
     changed = false;
