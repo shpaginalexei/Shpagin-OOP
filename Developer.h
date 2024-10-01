@@ -1,6 +1,6 @@
 ﻿#pragma once
+#include "pch.h"
 #include "Employee.h"
-#include <boost/serialization/base_object.hpp>
 
 
 class ShpaginDeveloper : public ShpaginEmployee
@@ -8,7 +8,6 @@ class ShpaginDeveloper : public ShpaginEmployee
 public:
 
 	ShpaginDeveloper();
-	~ShpaginDeveloper() {};
 
 	void console_input(std::istream&) override;
 	void console_output(std::ostream&) const override;

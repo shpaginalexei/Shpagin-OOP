@@ -1,8 +1,5 @@
 ﻿#include "Employee.h"
 #include "Utils.h"
-#include <iostream>
-#include <fstream>
-#include <limits>
 
 
 int ShpaginEmployee::max_id = 0;

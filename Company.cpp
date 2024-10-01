@@ -1,29 +1,17 @@
 ﻿#include "Company.h"
 #include "Employee.h"
 #include "Developer.h"
-#include <iostream>
-#include <fstream>
-#include <unordered_map>
-#include <filesystem>
-
-#include <boost/serialization/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/serialization/export.hpp>
-
-BOOST_CLASS_EXPORT(ShpaginDeveloper)
 
 
 void ShpaginCompany::add_employee() {
-	boost::shared_ptr<ShpaginEmployee> e  = boost::make_shared<ShpaginEmployee>(ShpaginEmployee());
+	std::shared_ptr<ShpaginEmployee> e  = std::make_shared<ShpaginEmployee>(ShpaginEmployee());
     e->console_input(std::cin);
     employees.push_back(e);
     changed = true;
 }
 
 void ShpaginCompany::add_developer() {
-    boost::shared_ptr<ShpaginEmployee> e = boost::make_shared<ShpaginDeveloper>(ShpaginDeveloper());
+    std::shared_ptr<ShpaginEmployee> e = std::make_shared<ShpaginDeveloper>(ShpaginDeveloper());
     e->console_input(std::cin);
     employees.push_back(e);
     changed = true;
@@ -38,23 +26,14 @@ std::ostream& operator<< (std::ostream& out, const ShpaginCompany& c) {
 }
 
 std::ifstream& operator>> (std::ifstream& fin, ShpaginCompany& c) {
-	size_t N;
-	fin >> N;
     boost::archive::text_iarchive oa(fin);
-	for (int i = 0; i < N; i++) {
-        boost::shared_ptr<ShpaginEmployee> e;
-        oa& e;
-        c.employees.push_back(e);
-	}
+    oa& c.employees;
 	return fin;
 }
 
 std::ofstream& operator<< (std::ofstream& fout, const ShpaginCompany& c) {
-	fout << c.employees.size() << std::endl;
     boost::archive::text_oarchive oa(fout);
-	for (auto& e : c.employees) {
-        oa& e;
-	}
+    oa& c.employees;
 	return fout;
 }
 

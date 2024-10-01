@@ -1,14 +1,12 @@
 ﻿#pragma once
-#include <string>
+#include "pch.h"
 #include "Utils.h"
-#include <boost/serialization/serialization.hpp>
 
 class ShpaginEmployee
 {
 public:
 
 	ShpaginEmployee();
-	virtual ~ShpaginEmployee() {};
 
 	static void reset_max_id();
 

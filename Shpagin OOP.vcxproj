@@ -134,6 +134,7 @@
     <ClCompile Include="Company.cpp" />
     <ClCompile Include="Developer.cpp" />
     <ClCompile Include="Employee.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Menu.cpp" />
   </ItemGroup>
@@ -142,6 +143,7 @@
     <ClInclude Include="Developer.h" />
     <ClInclude Include="Employee.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

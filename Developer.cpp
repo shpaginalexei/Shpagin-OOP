@@ -1,8 +1,8 @@
 ﻿#include "Developer.h"
 #include "Utils.h"
-#include <iostream>
-#include <fstream>
 
+
+BOOST_CLASS_EXPORT(ShpaginDeveloper)
 
 ShpaginDeveloper::ShpaginDeveloper() : ShpaginEmployee() {
 	main_language = "";

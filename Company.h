@@ -1,17 +1,24 @@
 ﻿#pragma once
+#include "pch.h"
 #include "Employee.h"
-#include <vector>
-#include <boost/serialization/shared_ptr.hpp>
 
 
 class ShpaginCompany
 {
 public:
+	~ShpaginCompany() {};
 
 	void add_employee();
 	void add_developer();
 
 	friend std::ostream& operator<< (std::ostream&, const ShpaginCompany&);
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar& employees;
+	}
 
 	friend std::ifstream& operator>> (std::ifstream&, ShpaginCompany&);
 	friend std::ofstream& operator<< (std::ofstream&, const ShpaginCompany&);
@@ -29,7 +36,7 @@ public:
 
 private:
 
-	std::vector<boost::shared_ptr<ShpaginEmployee>> employees = {};
+	std::vector<std::shared_ptr<ShpaginEmployee>> employees = {};
 
 	void clear();
 

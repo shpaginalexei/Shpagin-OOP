@@ -1,6 +1,6 @@
 ﻿#pragma once
+#include "pch.h"
 #include "Company.h"
-#include <string>
 
 
 void Print(const std::string[], const int);
