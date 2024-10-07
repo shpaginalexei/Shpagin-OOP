@@ -1,13 +1,11 @@
 ﻿#include "pch.h"
-#include "Utils.h"
 #include "Menu.h"
 #include "Company.h"
 #include <Windows.h>
 
 
-
-int main() {
-
+int main()
+{
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
