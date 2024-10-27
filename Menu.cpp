@@ -3,58 +3,61 @@
 #include <conio.h>
 
 
-void Print(const std::string menu[], const int size) {
-    for (size_t i{}; i < size; i++) {
-        std::cout << menu[i] << std::endl;
+void Print(const std::wstring menu[], const int size)
+{
+    for (int i = 0; i < size; i++) {
+        std::wcout << menu[i] << std::endl;
     }
-    std::cout << "\n";
+    std::wcout << L"\n";
 }
 
-void BackToMenu() {
-    std::cout << "\n\nПожалуйста, нажмите Enter, чтобы вернуться в меню...";
+void BackToMenu()
+{
+    std::wcout << L"\n\nПожалуйста, нажмите Enter, чтобы вернуться в меню...";
     while (_getch() != 13) { continue; }
     system("cls");
 }
 
-void MainMenu(ShpaginCompany& company) {
+void MainMenu(ShpaginCompany& company)
+{
     static const int main_menu_size = 7;
-    static const std::string main_menu[main_menu_size] = {
-    "1. Добавить сотрудника",
-    "2. Добавить разработчика",
-    "3. Просмотреть всех",
-    "4. Сохранить",
-    "5. Загрузить",
-    "6. Очистить",
-    "0. Выход",
+    static const std::wstring main_menu[main_menu_size] = {
+        L"1. Добавить сотрудника",
+        L"2. Добавить разработчика",
+        L"3. Просмотреть всех",
+        L"4. Сохранить",
+        L"5. Загрузить",
+        L"6. Очистить",
+        L"0. Выход",
     };
     Print(main_menu, main_menu_size);
-    int menu = GetCorrectNumber(std::cin, 0, 6, ">> ", "");
+    int menu = GetCorrectNumber(std::cin, 0, 6, L">> ");
     system("cls");
     switch (menu) {
     case 1:
     {
-        std::cout << "-> Добавить сотрудника" << std::endl;
+        std::wcout << L"-> Добавить сотрудника" << std::endl;
         company.add_employee();
         BackToMenu();
         break;
     }
     case 2:
     {
-        std::cout << "-> Добавить разработчика" << std::endl;
+        std::wcout << L"-> Добавить разработчика" << std::endl;
         company.add_developer();
         BackToMenu();
         break;
     }
     case 3:
     {
-        std::cout << "-> Просмотреть всех" << std::endl;
-        std::cout << company;
+        std::wcout << L"-> Просмотреть всех" << std::endl;
+        std::wcout << company;
         BackToMenu();
         break;
     }
     case 4:
     {
-        std::cout << "-> Сохранить" << std::endl;
+        std::wcout << L"-> Сохранить" << std::endl;
         if (CheckBeforeSave(company)) {
             company.save_to_file();
         }
@@ -63,7 +66,7 @@ void MainMenu(ShpaginCompany& company) {
     }
     case 5:
     {
-        std::cout << "-> Загрузить" << std::endl;
+        std::wcout << L"-> Загрузить" << std::endl;
         CheckBeforeLoad(company);
         company.load_from_file();
         BackToMenu();
@@ -71,7 +74,7 @@ void MainMenu(ShpaginCompany& company) {
     }
     case 6:
     {
-        std::cout << "-> Очистить" << std::endl;
+        std::wcout << L"-> Очистить" << std::endl;
         company.clear_company();
         BackToMenu();
         break;
@@ -85,31 +88,33 @@ void MainMenu(ShpaginCompany& company) {
     }
 }
 
-void InputFileName(ShpaginCompany& c) {
+void InputFileName(ShpaginCompany& c)
+{
     c.show_saves();
-    std::cout << "Введите имя файла: ";
-    std::string fn;
-    getline(std::cin >> std::ws, fn);
+    std::wcout << L"Введите имя файла: ";
+    std::wstring fn;
+    getline(std::wcin >> std::ws, fn);
     c.set_filename(fn);
 }
 
-bool CheckBeforeSave(ShpaginCompany& c) {
+bool CheckBeforeSave(ShpaginCompany& c)
+{
     if (c.saved()) {
         if (c.has_saved_file()) {
-            std::cout << "*В компании нет несохраненных изменений.\n";
+            std::wcout << L"*В компании нет несохраненных изменений.\n";
             return false;
         }
         else if (c.empty()) {
-            std::cout << "*Компания пуста\n";
-            if (GetCorrectNumber(std::cin, 0, 1, "Хотите сохранить пустой файл? (1 - да, 0 - нет): ", "") == 0) {
+            std::wcout << L"*Компания пуста\n";
+            if (GetCorrectNumber(std::cin, 0, 1, L"Хотите сохранить пустой файл? (1 - да, 0 - нет): ") == 0) {
                 return false;
             }
         }
     }
     else if (c.has_saved_file()) {
-        int choice = GetCorrectNumber(std::cin, 0, 2, "Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ", "");
+        int choice = GetCorrectNumber(std::cin, 0, 2, L"Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ");
         if (choice == 2) {
-            std::cout << "*Изменения были утеряны\n";
+            std::wcout << L"*Изменения были утеряны\n";
             return false;
         }
         if (choice == 1) {
@@ -118,8 +123,8 @@ bool CheckBeforeSave(ShpaginCompany& c) {
         return true;
     }
     else if (c.empty()) {
-        std::cout << "*Компания пуста\n";
-        if (GetCorrectNumber(std::cin, 0, 1, "Хотите сохранить пустой файл? (1 - да, 0 - нет): ", "") == 0) {
+        std::wcout << L"*Компания пуста\n";
+        if (GetCorrectNumber(std::cin, 0, 1, L"Хотите сохранить пустой файл? (1 - да, 0 - нет): ") == 0) {
             return false;
         }
     }
@@ -127,13 +132,14 @@ bool CheckBeforeSave(ShpaginCompany& c) {
     return true;
 }
 
-void CheckBeforeExit(ShpaginCompany& c) {
+void CheckBeforeExit(ShpaginCompany& c)
+{
     if (!c.saved()) {
         if (c.has_saved_file()) {
-            std::cout << "*В компании есть несохраненные изменения\n";
-            int choice = GetCorrectNumber(std::cin, 0, 2, "Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ", "");
+            std::wcout << L"*В компании есть несохраненные изменения\n";
+            int choice = GetCorrectNumber(std::cin, 0, 2, L"Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ");
             if (choice == 2) {
-                std::cout << "*Изменения были утеряны\n";
+                std::wcout << L"*Изменения были утеряны\n";
             }
             else if (choice == 1) {
                 InputFileName(c);
@@ -144,8 +150,8 @@ void CheckBeforeExit(ShpaginCompany& c) {
             }
         }
         else {
-            std::cout << "*Внесенные изменения являются новыми и не сохранены.\n";
-            if (GetCorrectNumber(std::cin, 0, 1, "Хотите сохранить изменения в файле? (1 - да, 0 - нет): ", "") == 0) {
+            std::wcout << L"*Внесенные изменения являются новыми и не сохранены.\n";
+            if (GetCorrectNumber(std::cin, 0, 1, L"Хотите сохранить изменения в файле? (1 - да, 0 - нет): ") == 0) {
                 std::cout << "*Данные были утеряны\n";
             }
             else {
@@ -156,7 +162,8 @@ void CheckBeforeExit(ShpaginCompany& c) {
     }
 }
 
-void CheckBeforeLoad(ShpaginCompany& pts) {
+void CheckBeforeLoad(ShpaginCompany& pts)
+{
     CheckBeforeExit(pts);
     InputFileName(pts);
 }

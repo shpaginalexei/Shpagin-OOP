@@ -1,29 +1,27 @@
 ﻿#pragma once
-#include <iostream>
-#include <string>
-#include <unordered_map>
+#include "pch.h"
 
 
 template <typename T>
 T GetCorrectNumber(std::istream& in, T min, T max,
-    const std::string welcome_message, const std::string error_message = "") {
+    const std::wstring welcome_message, const std::wstring error_message = L"") {
     bool correct_answer = false;
     T value;
     while (!correct_answer) {
 
-        std::cout << welcome_message;
+        std::wcout << welcome_message;
 
         in >> std::ws >> value;
 
         if (std::cin.fail() || std::cin.peek() != '\n') {
-            std::cout << "**Неверное ввод, пожалуйста, повторите\n";
+            std::wcout << L"**Неверное ввод, пожалуйста, повторите\n";
         }
         else if (!(min <= value && value <= max)) {
-            if (error_message == "") {
-                std::cout << "**Число должно находиться в диапазоне " << min << ".." << max << ", пожалуйста, повторите\n";
+            if (error_message == L"") {
+                std::wcout << L"**Число должно находиться в диапазоне " << min << L".." << max << L", пожалуйста, повторите\n";
             }
             else {
-                std::cout << error_message;
+                std::wcout << error_message;
             }
         }
         else {

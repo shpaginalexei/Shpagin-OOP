@@ -9,8 +9,8 @@ public:
 
 	ShpaginDeveloper();
 
-	void console_input(std::istream&) override;
-	void console_output(std::ostream&) const override;
+	void console_input() override;
+	void console_output() const override;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -24,8 +24,8 @@ public:
 
 private:
 	
-	std::string main_language;
+	std::wstring main_language;
 	bool is_full_stack;
-	std::string current_project_name;
+	std::wstring current_project_name;
 
 };

@@ -3,7 +3,7 @@
 #include "Company.h"
 
 
-void Print(const std::string[], const int);
+void Print(const std::wstring[], const int);
 void BackToMenu();
 
 void MainMenu(ShpaginCompany&);

@@ -10,8 +10,8 @@ public:
 
 	static void reset_max_id();
 
-	virtual void console_input(std::istream&);
-	virtual void console_output(std::ostream&) const;
+	virtual void console_input();
+	virtual void console_output() const;
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -26,7 +26,7 @@ public:
 protected:
 	static int max_id;
 	int id;
-	std::string name;
+	std::wstring name;
 	int age;
 	int experience;
 	int salary;

@@ -11,7 +11,7 @@ public:
 	void add_employee();
 	void add_developer();
 
-	friend std::ostream& operator<< (std::ostream&, const ShpaginCompany&);
+	friend std::wostream& operator<< (std::wostream&, const ShpaginCompany&);
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -20,14 +20,11 @@ public:
 		ar& employees;
 	}
 
-	friend std::ifstream& operator>> (std::ifstream&, ShpaginCompany&);
-	friend std::ofstream& operator<< (std::ofstream&, const ShpaginCompany&);
-
 	bool empty() const;
 	bool has_saved_file() const;
 	bool saved() const;
-	void set_filename(const std::string&);
-	void set_directory(const std::string&);
+	void set_filename(const std::wstring&);
+	void set_directory(const std::wstring&);
 	void show_saves() const;
 
 	void save_to_file();
@@ -41,8 +38,8 @@ private:
 	void clear();
 
 	bool changed = false;
-	std::string file_name = "";
-	const std::string extention = ".txt";
-	std::string directory = "";
+	std::wstring file_name = L"";
+	const std::wstring extention = L".txt";
+	std::wstring directory = L"";
 
 };
