@@ -72,7 +72,7 @@ void ShpaginCompany::save_to_file()
     if (file.is_open()) {
 
         boost::archive::binary_oarchive oa(file);
-        oa& employees;
+        oa& *this;
 
         std::wcout << file_name << L": Данные " << employees.size() << L" сотрудников(-а) успешно сохранены!" << std::endl;
         changed = false;
@@ -102,7 +102,7 @@ void ShpaginCompany::load_from_file() {
         clear();
 
         boost::archive::binary_iarchive ia(file);
-        ia& employees;
+        ia& *this;
         
         std::wcout << file_name << L": Данные " << employees.size() << L" сотрудников(-а) успешно загружены!" << std::endl;
         changed = false;
