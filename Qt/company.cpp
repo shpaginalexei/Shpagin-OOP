@@ -1,5 +1,50 @@
 ﻿#include "company.h"
+#include "developer.h"
 
+void ShpaginCompany::addEmployee()
+{
+    std::shared_ptr<ShpaginEmployee> e  = std::make_shared<ShpaginEmployee>();
+    employees.push_back(e);
+}
+
+void ShpaginCompany::addDeveloper()
+{
+    std::shared_ptr<ShpaginEmployee> d = std::make_shared<ShpaginDeveloper>();
+    employees.push_back(d);
+}
+
+void ShpaginCompany::deleteEmployee(int idx)
+{
+    employees.erase(employees.begin() + idx);
+}
+
+std::shared_ptr<ShpaginEmployee> ShpaginCompany::getEmployee(int idx) const
+{
+    if (idx < employees.size()) {
+        return employees[idx];
+    } else {
+        return nullptr;
+    }
+}
+
+QStringList ShpaginCompany::getColumnNames() const
+{
+    if (employees.empty()) {
+        return QStringList();
+    }
+
+    int columnCount = 0;
+    QStringList columnNames;
+    for (const auto& e : employees) {
+        QStringList employeeColumnNames = e->getColumnNames();
+        if (employeeColumnNames.size() > columnCount) {
+            columnCount = employeeColumnNames.size();
+            columnNames = employeeColumnNames;
+        }
+    }
+
+    return columnNames;
+}
 
 void ShpaginCompany::draw(QPainter& painter, const QFontMetrics& metrics, int padx, int pady, int padding)
 {
@@ -23,32 +68,17 @@ void ShpaginCompany::draw(QPainter& painter, const QFontMetrics& metrics, int pa
     y += cellSizes[0].height();
 
     // draw table body
+    // std::for_each(employees.begin(), employees.end(),
+    //               std::bind(&ShpaginEmployee::draw,
+    //                         std::placeholders::_1,
+    //                         std::ref(painter),
+    //                         std::cref(cellSizes),
+    //                         x,
+    //                         std::ref(y)));
     std::for_each(employees.begin(), employees.end(),
-                  std::bind(&ShpaginEmployee::draw,
-                            std::placeholders::_1,
-                            std::ref(painter),
-                            std::cref(cellSizes),
-                            x,
-                            std::ref(y)));
-}
-
-QStringList ShpaginCompany::getColumnNames() const
-{
-    if (employees.empty()) {
-        return QStringList();
-    }
-
-    int columnCount = 0;
-    QStringList columnNames;
-    for (const auto& e : employees) {
-        QStringList employeeColumnNames = e->getColumnNames();
-        if (employeeColumnNames.size() > columnCount) {
-            columnCount = employeeColumnNames.size();
-            columnNames = employeeColumnNames;
-        }
-    }
-
-    return columnNames;
+        [&painter, &cellSizes, &x, &y] (std::shared_ptr<ShpaginEmployee> e) {
+                      e->draw(painter, cellSizes, x, y);
+    });
 }
 
 QList<QSize> ShpaginCompany::calculateCellSizes(const QFontMetrics& metrics, int padding) const
@@ -101,20 +131,25 @@ void ShpaginCompany::load(const std::wstring& path)
     ia& *this;
 }
 
-// void ShpaginCompany::save(const std::wstring& path)
-// {
-//     std::ofstream fout(path, std::ios::binary);
-//     boost::archive::binary_oarchive oa(fout);
-//     oa& *this;
-// }
-
-bool ShpaginCompany::empty() const
+void ShpaginCompany::save(const std::wstring& path)
 {
-    return employees.empty();
+    std::ofstream fout(path, std::ios::binary);
+    boost::archive::binary_oarchive oa(fout);
+    oa& *this;
 }
 
 void ShpaginCompany::clear()
 {
     employees.clear();
     ShpaginEmployee::reset_max_id();
+}
+
+bool ShpaginCompany::empty() const
+{
+    return employees.empty();
+}
+
+int ShpaginCompany::size() const
+{
+    return employees.size();
 }

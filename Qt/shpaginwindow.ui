@@ -62,7 +62,14 @@
     <addaction name="actionSaveAs"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Редактировать</string>
+    </property>
+    <addaction name="actionEditEmployees"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -103,6 +110,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionEditEmployees">
+   <property name="text">
+    <string>Редактировать сотрудников...</string>
+   </property>
+   <property name="toolTip">
+    <string>Редактировать сотрудников...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

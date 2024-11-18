@@ -1,19 +1,29 @@
 ﻿#pragma once
-#include "pch.h"
 
+#include "pch.h"
 
 class ShpaginEmployee
 {
 public:
-	ShpaginEmployee();
+    ShpaginEmployee();
+    virtual ~ShpaginEmployee() = default;
 
     static void reset_max_id();
+    static void set_max_id(int id);
+    static int get_max_id();
+
+    QString getNameForList() const;
 
     virtual QStringList getColumnNames() const;
     virtual QStringList getData() const;
 
-    QList<QSize> calculateCellSizes(const QFontMetrics& metrics, const int& padding) const;
-    void draw(QPainter& painter, const QList<QSize>& cellSizes, const int& x, int& y) const;
+    void setName(std::wstring name);
+    void setAge(int age);
+    void setExperience(int experience);
+    void setSalary(int salary);
+
+    QList<QSize> calculateCellSizes(const QFontMetrics& metrics, int padding) const;
+    void draw(QPainter& painter, const QList<QSize>& cellSizes, int x, int& y) const;
 
 private:
 	friend class boost::serialization::access;

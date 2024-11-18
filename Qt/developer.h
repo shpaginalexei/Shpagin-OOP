@@ -1,15 +1,19 @@
 ﻿#pragma once
+
 #include "pch.h"
 #include "employee.h"
-
 
 class ShpaginDeveloper : public ShpaginEmployee
 {
 public:
-	ShpaginDeveloper();
+    ShpaginDeveloper();
 
     QStringList getColumnNames() const override;
     QStringList getData() const override;
+
+    void setMainLanguage(std::wstring main_language);
+    void setIsFullStack(bool is_full_stack);
+    void setCurrentProjectName(std::wstring current_project_name);
 
 private:
 	friend class boost::serialization::access;
@@ -28,3 +32,13 @@ protected:
     std::wstring current_project_name;
 
 };
+
+namespace Language
+{
+    enum Language {
+        Empty, C, CPP, C_Sharp, Python, Java, JavaScript, Go, TypeScript, PHP, Rust, Ruby, Kotlin, Swift,
+        MIN = Empty, MAX = Swift,
+    };
+    QString get(const Language language);
+    QStringList getAll();
+}

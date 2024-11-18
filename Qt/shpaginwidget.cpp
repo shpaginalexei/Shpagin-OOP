@@ -1,6 +1,5 @@
 #include "shpaginwidget.h"
 
-
 ShpaginWidget::ShpaginWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -36,13 +35,14 @@ void ShpaginWidget::load(const QString& path)
 {
     clean();
     company.load(path.toStdWString());
+    resize(minimumSizeHint());
     update();
 }
 
-// void ShpaginWidget::save(const QString& path)
-// {
-//     company.save(path.toStdWString());
-// }
+void ShpaginWidget::save(const QString& path)
+{
+    company.save(path.toStdWString());
+}
 
 void ShpaginWidget::update()
 {

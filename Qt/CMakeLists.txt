@@ -36,6 +36,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         company.h developer.h employee.h pch.h
         company.cpp developer.cpp employee.cpp pch.cpp
         shpaginwidget.h shpaginwidget.cpp
+        shpagindialog.h shpagindialog.cpp shpagindialog.ui
 
 
 

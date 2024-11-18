@@ -1,20 +1,34 @@
 ﻿#include "employee.h"
 
-
 int ShpaginEmployee::max_id = 0;
 
 void ShpaginEmployee::reset_max_id()
 {
-	max_id = 0;
+    max_id = 0;
+}
+
+void ShpaginEmployee::set_max_id(int id)
+{
+    max_id = id;
+}
+
+int ShpaginEmployee::get_max_id()
+{
+    return max_id;
 }
 
 ShpaginEmployee::ShpaginEmployee()
 {
 	id = ++max_id;
     name = L"";
-	age = 0;
+    age = 18;
 	experience = 0;
 	salary = 0;
+}
+
+QString ShpaginEmployee::getNameForList() const
+{
+    return QString("#%1 - \"%2\"").arg(id).arg(name);
 }
 
 QStringList ShpaginEmployee::getColumnNames() const
@@ -39,7 +53,27 @@ QStringList ShpaginEmployee::getData() const
     });
 }
 
-void ShpaginEmployee::draw(QPainter& painter, const QList<QSize>& cellSizes, const int& x, int& y) const
+void ShpaginEmployee::setName(std::wstring name)
+{
+    this->name = name;
+}
+
+void ShpaginEmployee::setAge(int age)
+{
+    this->age = age;
+}
+
+void ShpaginEmployee::setExperience(int experience)
+{
+    this->experience = experience;
+}
+
+void ShpaginEmployee::setSalary(int salary)
+{
+    this->salary = salary;
+}
+
+void ShpaginEmployee::draw(QPainter& painter, const QList<QSize>& cellSizes, int x, int& y) const
 {
     QStringList rowData = getData();
 
@@ -59,7 +93,7 @@ void ShpaginEmployee::draw(QPainter& painter, const QList<QSize>& cellSizes, con
     y += cellSizes[0].height();
 }
 
-QList<QSize> ShpaginEmployee::calculateCellSizes(const QFontMetrics& metrics, const int& padding) const
+QList<QSize> ShpaginEmployee::calculateCellSizes(const QFontMetrics& metrics, int padding) const
 {
     QStringList data = getData();
     int rowHeight = metrics.height();
