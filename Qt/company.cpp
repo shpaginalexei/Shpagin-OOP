@@ -94,14 +94,23 @@ QList<QSize> ShpaginCompany::calculateCellSizes(const QFontMetrics& metrics, int
                                   metrics.height() + 2 * padding));
     }
 
-    for (const auto& e : employees) {
-        QList<QSize> employeeCellSizes = e->calculateCellSizes(metrics, padding);
-        for (int i = 0; i < employeeCellSizes.size(); ++i) {
-            if (employeeCellSizes[i].width() > cellSizes[i].width()) {
-                cellSizes[i] = employeeCellSizes[i];
+    // for (const auto& e : employees) {
+    //     QList<QSize> employeeCellSizes = e->calculateCellSizes(metrics, padding);
+    //     for (int i = 0; i < employeeCellSizes.size(); ++i) {
+    //         if (employeeCellSizes[i].width() > cellSizes[i].width()) {
+    //             cellSizes[i] = employeeCellSizes[i];
+    //         }
+    //     }
+    // }
+    std::for_each(employees.begin(), employees.end(),
+        [&] (std::shared_ptr<ShpaginEmployee> e) {
+            QList<QSize> employeeCellSizes = e->calculateCellSizes(metrics, padding);
+            for (int i = 0; i < employeeCellSizes.size(); ++i) {
+              if (employeeCellSizes[i].width() > cellSizes[i].width()) {
+                  cellSizes[i] = employeeCellSizes[i];
+              }
             }
-        }
-    }
+        });
 
     return cellSizes;
 }

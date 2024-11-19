@@ -23,9 +23,13 @@ ShpaginDialog::ShpaginDialog(QWidget *parent, const ShpaginCompany& company)
         return;
     }
 
-    for(int i = 0; i < company.size(); ++i) {
-        ui->listWidget->addItem(company.getEmployee(i)->getNameForList());
-    }
+    // for(int i = 0; i < company.size(); ++i) {
+    //     ui->listWidget->addItem(company.getEmployee(i)->getNameForList());
+    // }
+    std::for_each(company.employees.begin(), company.employees.end(),
+                  [&] (std::shared_ptr<ShpaginEmployee> e) {
+                      ui->listWidget->addItem(e->getNameForList());
+    });
     ui->listWidget->setCurrentRow(0);
 }
 
