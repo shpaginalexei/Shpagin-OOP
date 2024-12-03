@@ -2,3 +2,5 @@ saves/
 X64/
 .vs/
 build/
+bin/
+obj/
