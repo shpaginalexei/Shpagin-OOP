@@ -6,7 +6,6 @@ namespace CSharp
     [XmlType("ShpaginEmployee")]
     public class ShpaginEmployee
     {
-        [XmlAttribute("Id")]
         protected static int max_id;
         public int Id { get; set; }
         public string Name { get; set; }
