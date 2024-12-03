@@ -11,7 +11,7 @@
             {
                 Directory.CreateDirectory(directory_path);
             }
-            company.set_directory($"{directory_path}\\");
+            company.Directory=$"{directory_path}\\";
 
             while (true)
             {

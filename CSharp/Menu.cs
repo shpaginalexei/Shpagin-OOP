@@ -32,21 +32,18 @@ namespace CSharp
                     {
                         Console.WriteLine("-> Добавить сотрудника");
                         company.add_employee();
-                        BackToMenu();
                         break;
                     }
                 case 2:
                     {
                         Console.WriteLine("-> Добавить разработчика");
                         company.add_developer();
-                        BackToMenu();
                         break;
                     }
                 case 3:
                     {
                         Console.WriteLine("-> Просмотреть всех");
                         company.console_output();
-                        BackToMenu();
                         break;
                     }
                 case 4:
@@ -63,7 +60,6 @@ namespace CSharp
                         {
                             Console.WriteLine("**Ошибка сохранения файла");
                         }
-                        BackToMenu();
                         break;
                     }
                 case 5:
@@ -78,14 +74,12 @@ namespace CSharp
                         {
                             Console.WriteLine("**Ошибка загрузки файла");
                         }
-                        BackToMenu();
                         break;
                     }
                 case 6:
                     {
                         Console.WriteLine("-> Очистить");
                         company.clear_company();
-                        BackToMenu();
                         break;
                     }
                 case 0:
@@ -96,13 +90,14 @@ namespace CSharp
                         break;
                     }
             }
+            BackToMenu();
         }
         private static void InputFileName(ShpaginCompany c)
         {
             if (c.show_saves())
             {
                 string fn = Utils.GetCorrectString("Введите имя файла: ");
-                c.set_filename(fn);
+                c.FileName = fn;
             }
             else
             {
@@ -112,81 +107,55 @@ namespace CSharp
 
         private static bool CheckBeforeSave(ShpaginCompany c)
         {
-            if (c.saved())
+            bool HandleSaved()
             {
-                if (c.has_saved_file())
-                {
-                    Console.WriteLine("*В компании нет несохраненных изменений");
-                    return false;
-                }
-                else if (c.empty())
-                {
-                    Console.WriteLine("*Компания пуста");
-                    if (Utils.GetCorrectIntNumber("Хотите сохранить пустой файл? (1 - да, 0 - нет): ", 0, 1) == 0)
-                    {
-                        return false;
-                    }
-                }
+                Console.WriteLine("*В компании нет несохраненных изменений");
+                return false;
             }
-            else if (c.has_saved_file())
+
+            bool HandleEmpty()
             {
-                int choice = Utils.GetCorrectIntNumber("Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ", 0, 2);
-                if (choice == 2)
+                Console.WriteLine("*В компании нечего сохранять");
+                return false;
+            }
+
+            bool HandleUnsavedWithFile()
+            {
+                switch (Utils.GetCorrectIntNumber("Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ", 0, 2))
                 {
-                    Console.WriteLine("*Изменения были утеряны");
-                    return false;
-                }
-                if (choice == 1)
-                {
-                    InputFileName(c);
+                    case 2:
+                        Console.WriteLine("*Изменения были утеряны");
+                        return false;
+                    case 1:
+                        InputFileName(c);
+                        break;
                 }
                 return true;
             }
-            else if (c.empty())
+
+            bool HandleUnsavedWithoutFile()
             {
-                Console.WriteLine("*Компания пуста");
-                if (Utils.GetCorrectIntNumber("Хотите сохранить пустой файл? (1 - да, 0 - нет): ", 0, 1) == 0)
+                if (c.Empty)
                 {
-                    return false;
+                    return HandleEmpty();
                 }
+                InputFileName(c);
+                return true;
             }
-            InputFileName(c);
-            return true;
+
+            if (c.Saved)
+            {
+                return c.Empty ? HandleEmpty() : HandleSaved();
+            }
+            return c.HasSavedFile ? HandleUnsavedWithFile() : HandleUnsavedWithoutFile();
         }
         private static void CheckBeforeExit(ShpaginCompany c)
         {
-            if (!c.saved())
+            if (!c.Saved)
             {
-                if (c.has_saved_file())
+                if (Utils.GetCorrectIntNumber("Хотите сохранить изменения в файле? (0 - нет, 1 - да): ", 0, 1) == 1)
                 {
-                    Console.WriteLine("*В компании есть несохраненные изменения");
-                    int choice = Utils.GetCorrectIntNumber("Хотите сохранить в том же файле? (0 - тот же, 1 - другой, 2 - не сохранять): ", 0, 2);
-                    if (choice == 2)
-                    {
-                        Console.WriteLine("*Изменения были утеряны");
-                    }
-                    else if (choice == 1)
-                    {
-                        InputFileName(c);
-                        c.save_to_file();
-                    }
-                    else if (choice == 0)
-                    {
-                        c.save_to_file();
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("*Внесенные изменения являются новыми и не сохранены");
-                    if (Utils.GetCorrectIntNumber("Хотите сохранить изменения в файле? (1 - да, 0 - нет): ", 0, 1) == 0)
-                    {
-                        Console.WriteLine("*Данные были утеряны");
-                    }
-                    else
-                    {
-                        InputFileName(c);
-                        c.save_to_file();
-                    }
+                    c.save_to_file();
                 }
             }
         }

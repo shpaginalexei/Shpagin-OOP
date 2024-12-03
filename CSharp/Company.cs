@@ -7,17 +7,20 @@ namespace CSharp
     {
         protected List<ShpaginEmployee> employees;
 
-        protected bool changed;
-        protected string fileName;
+        public bool Changed { get; set; }
+        public bool Empty => employees.Count == 0;
+        public bool HasSavedFile => FileName != "";
+        public bool Saved => !Changed;
+        public string FileName { get; set; }
+        public string Directory { get; set; }
         protected const string extention = ".xml";
-        protected string directory;
 
         public ShpaginCompany()
         {
             employees = [];
-            changed = false;
-            fileName = "";
-            directory = "";
+            Changed = false;
+            FileName = "";
+            Directory = "";
         }
 
         public void add_employee()
@@ -25,7 +28,7 @@ namespace CSharp
             ShpaginEmployee e = new();
             e.console_input();
             employees.Add(e);
-            changed = true;
+            Changed = true;
         }
 
         public void add_developer()
@@ -33,7 +36,7 @@ namespace CSharp
             ShpaginDeveloper d = new();
             d.console_input();
             employees.Add(d);
-            changed = true;
+            Changed = true;
         }
 
         public void console_output()
@@ -52,35 +55,11 @@ namespace CSharp
             }
         }
 
-        public bool empty()
-        {
-            return employees.Count == 0;
-        }
-        public bool has_saved_file()
-        {
-            return fileName != "";
-        }
-
-        public bool saved()
-        {
-            return !changed;
-        }
-
-        public void set_filename(string fn)
-        {
-            fileName = fn;
-        }
-
-        public void set_directory(string dir)
-        {
-            directory = dir;
-        }
-
         protected void clear()
         {
             employees.Clear();
-            ShpaginEmployee.reset_max_id();
-            changed = false;
+            ShpaginEmployee.ResetMaxId();
+            Changed = false;
         }
 
         public void clear_company()
@@ -92,16 +71,16 @@ namespace CSharp
         public void save_to_file()
         {
             var xs = new XmlSerializer(typeof(List<ShpaginEmployee>), new[] { typeof(ShpaginEmployee), typeof(ShpaginDeveloper) });
-            using (Stream fs = new FileStream(directory + fileName + extention, FileMode.OpenOrCreate))
+            using (Stream fs = new FileStream(Directory + FileName + extention, FileMode.OpenOrCreate))
             {
                 xs.Serialize(fs, employees);
             }
-            changed = false;
+            Changed = false;
         }
 
         public bool show_saves()
         {
-            var files = Directory.GetFiles(directory, "*" + extention);
+            var files = System.IO.Directory.GetFiles(Directory, "*" + extention);
             Console.WriteLine("Существующие сохранения:");
 
             if (files.Length > 0)
@@ -124,11 +103,11 @@ namespace CSharp
         public void load_from_file()
         {
             var xs = new XmlSerializer(typeof(List<ShpaginEmployee>), new[] { typeof(ShpaginEmployee), typeof(ShpaginDeveloper) });
-            using (Stream fs = new FileStream(directory + fileName + extention, FileMode.Open))
+            using (Stream fs = new FileStream(Directory + FileName + extention, FileMode.Open))
             {
                 employees = (xs.Deserialize(fs) as List<ShpaginEmployee>)!;
             }
-            changed = false;
+            Changed = false;
         }
     }
 }

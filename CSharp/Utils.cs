@@ -33,17 +33,15 @@
             while (true) {
                 Console.Write(welcomeMessage);
                 str = Console.ReadLine()!;
-                if (string.IsNullOrEmpty(str))
+                if (!string.IsNullOrEmpty(str))
                 {
-                    Console.WriteLine("**Неверное ввод, пожалуйста, повторите");
+                    return str;
                 }
                 else
                 {
-                    break;
+                    Console.WriteLine("**Неверное ввод, пожалуйста, повторите");
                 }
-            };
-
-            return str;
+            }
         }
     }
 }

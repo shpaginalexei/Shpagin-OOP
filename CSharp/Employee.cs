@@ -6,54 +6,41 @@ namespace CSharp
     [XmlType("ShpaginEmployee")]
     public class ShpaginEmployee
     {
-        [NonSerialized]
-        public static int max_id;
-
         [XmlAttribute("Id")]
-        public int id;
-
-        [XmlElement("Name")]
-        public string name;
-
-        [XmlElement("Age")]
-        public int age;
-
-        [XmlElement("Experience")]
-        public int experience;
-
-        [XmlElement("Salary")]
-        public int salary;
+        protected static int max_id;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public int Experience { get; set; }
+        public int Salary { get; set; }
 
         public ShpaginEmployee()
         {
-            id = ++max_id;
-            name = "";
-            age = 0;
-            experience = 0;
-            salary = 0;
+            Id = ++max_id;
+            Name = "";
+            Age = 0;
+            Experience = 0;
+            Salary = 0;
         }
 
-        public static void reset_max_id()
-        {
-            max_id = 0;
-        }
+        public static void ResetMaxId() { max_id = 0; }
 
         public virtual void console_input()
         {
-            name = Utils.GetCorrectString("фамилия и имя: ");
-            age = Utils.GetCorrectIntNumber("возраст: ", 18, 100);
-            experience = Utils.GetCorrectIntNumber("стаж работы: ", 0, age);
-            salary = Utils.GetCorrectIntNumber("зарпата (в месяц): ", 0, int.MaxValue);
+            Name = Utils.GetCorrectString("фамилия и имя: ");
+            Age = Utils.GetCorrectIntNumber("возраст: ", 18, 100);
+            Experience = Utils.GetCorrectIntNumber("стаж работы: ", 0, Age);
+            Salary = Utils.GetCorrectIntNumber("зарпата (в месяц): ", 0, int.MaxValue);
         }
 
         public virtual void console_output()
         {
             Console.WriteLine(
-                $"Сотрудник id_{id}\n" +
-                $"имя - {name}\n" +
-                $"возраст - {age}\n" +
-                $"стаж работы - {experience} год/года/лет\n" +
-                $"зарпата (в месяц) - {salary} руб/мес");
+                $"Сотрудник id_{Id}\n" +
+                $"имя - {Name}\n" +
+                $"возраст - {Age}\n" +
+                $"стаж работы - {Experience} год/года/лет\n" +
+                $"зарпата (в месяц) - {Salary} руб/мес");
         }
     }
 }
