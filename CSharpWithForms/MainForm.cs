@@ -182,9 +182,10 @@ namespace CSharpWithForms
             {
                 return;
             }
+            int nextRow = currentRow == company.employees.Count - 1 ? currentRow - 1 : currentRow;
             company.DeleteEmployee(currentRow);
             listBox.DataSource = GetEmployeesList();
-            listBox.SelectedIndex = listBox.Items.Count == 0 ? -1 : 0;
+            listBox.SelectedIndex = nextRow;
             CompanyIsEmptyUpdate();
         }
 
